@@ -1,0 +1,61 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo">📦</div>
+    <h1>Sistema de Envíos</h1>
+    <p class="subtitle">Inicia sesión para continuar</p>
+
+    <!-- Mensaje de error -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <label>📧 Correo Electrónico</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="tu@email.com"
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        />
+        <span class="error-text" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Correo inválido
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label>🔒 Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        />
+        <span class="error-text" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Mínimo 6 caracteres
+        </span>
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn-primary"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <span *ngIf="loading">Cargando...</span>
+        <span *ngIf="!loading">🚀 Iniciar Sesión</span>
+      </button>
+    </form>
+
+    <div class="register-link">
+      ¿No tienes cuenta? 
+      <a routerLink="/register">Regístrate aquí</a>
+    </div>
+
+    <div class="demo-info">
+      <p><strong>👥 Usuarios de Prueba:</strong></p>
+      <p>📧 admin&#64;test.com / 🔑 123456 (Admin)</p>
+      <p>📧 repartidor&#64;test.com / 🔑 123456 (Repartidor)</p>
+      <p>📧 cliente&#64;test.com / 🔑 123456 (Cliente)</p>
+    </div>
+  </div>
+</div>

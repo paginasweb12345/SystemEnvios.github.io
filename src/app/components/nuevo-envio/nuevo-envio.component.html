@@ -1,0 +1,126 @@
+<div class="nuevo-envio-container">
+  <header class="page-header">
+    <h1>➕ Nuevo Envío</h1>
+    <p>Registra un nuevo paquete para enviar</p>
+  </header>
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      ✅ {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      ❌ {{ errorMessage }}
+    </div>
+  }
+
+  <div class="form-card">
+    <form [formGroup]="envioForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>📦 Remitente *</label>
+          <input
+            type="text"
+            formControlName="remitente"
+            placeholder="Nombre del remitente"
+          />
+          @if (envioForm.get('remitente')?.invalid && envioForm.get('remitente')?.touched) {
+            <span class="error-text">Campo requerido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>👤 Destinatario *</label>
+          <input
+            type="text"
+            formControlName="destinatario"
+            placeholder="Nombre del destinatario"
+          />
+          @if (envioForm.get('destinatario')?.invalid && envioForm.get('destinatario')?.touched) {
+            <span class="error-text">Campo requerido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>📍 Dirección de Entrega *</label>
+        <input
+          type="text"
+          formControlName="direccion"
+          placeholder="Av. Principal 123, Lima"
+        />
+        @if (envioForm.get('direccion')?.invalid && envioForm.get('direccion')?.touched) {
+          <span class="error-text">Campo requerido</span>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>📞 Teléfono (opcional)</label>
+          <input
+            type="tel"
+            formControlName="telefono"
+            placeholder="999 999 999"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>📅 Fecha de Envío *</label>
+          <input
+            type="date"
+            formControlName="fecha_envio"
+          />
+          @if (envioForm.get('fecha_envio')?.invalid && envioForm.get('fecha_envio')?.touched) {
+            <span class="error-text">Campo requerido</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>💰 Costo del Envío (S/.) *</label>
+        <input
+          type="number"
+          formControlName="costo"
+          placeholder="15.00"
+          step="0.01"
+          min="0"
+        />
+        @if (envioForm.get('costo')?.invalid && envioForm.get('costo')?.touched) {
+          <span class="error-text">Ingresa un monto válido</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>📝 Descripción del Paquete (opcional)</label>
+        <textarea
+          formControlName="descripcion"
+          placeholder="Ej: Caja mediana con documentos"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          routerLink="/dashboard/cliente"
+        >
+          ❌ Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="envioForm.invalid || loading"
+        >
+          @if (loading) {
+            <span>Guardando...</span>
+          } @else {
+            <span>✅ Registrar Envío</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="logo">📦</div>
+    <h1>Crear Cuenta</h1>
+    <p class="subtitle">Regístrate en el sistema de envíos</p>
+
+    @if (errorMessage) {
+      <div class="alert alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <div class="form-group">
+        <label>👤 Nombre Completo</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          placeholder="Juan Pérez"
+          [class.error]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>📧 Correo Electrónico</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="tu@email.com"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>📱 Teléfono (opcional)</label>
+        <input
+          type="tel"
+          formControlName="telefono"
+          placeholder="999 999 999"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>🔒 Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+          [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>🎭 Tipo de Usuario</label>
+        <select formControlName="rol">
+          <option value="cliente">Cliente</option>
+          <option value="repartidor">Repartidor</option>
+        </select>
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn-primary"
+        [disabled]="registerForm.invalid || loading"
+      >
+        @if (loading) {
+          <span>Registrando...</span>
+        } @else {
+          <span>✅ Crear Cuenta</span>
+        }
+      </button>
+    </form>
+
+    <div class="login-link">
+      ¿Ya tienes cuenta? 
+      <a routerLink="/login">Inicia sesión aquí</a>
+    </div>
+  </div>
+</div>
