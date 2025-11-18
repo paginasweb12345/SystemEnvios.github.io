@@ -25,7 +25,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       telefono: [''],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rol: ['cliente', Validators.required]
+      rol: ['cliente', Validators.required]   // Aquí se puede elegir "administrador" también
     });
   }
 
@@ -37,7 +37,13 @@ export class RegisterComponent {
 
     try {
       const { rol, ...data } = this.registerForm.value;
-      await this.authService.register(data, rol as 'cliente' | 'repartidor'); // ← CAMBIO AQUÍ
+
+      // 👇 CORREGIDO — ahora acepta 'administrador'
+      await this.authService.register(
+        data,
+        rol as 'cliente' | 'repartidor' | 'administrador'
+      );
+
     } catch (error: any) {
       this.errorMessage = error;
     } finally {

@@ -7,18 +7,14 @@ import {
   query,
   where,
   Timestamp
-} from 'firebase/firestore';
+} from '@angular/fire/firestore'; // Cambié de 'firebase/firestore' a '@angular/fire/firestore'
 import { Estadisticas, Envio } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadisticasService {
-  private firestore: Firestore;
-
-  constructor() {
-    this.firestore = inject('FIRESTORE' as any); // ✅ CAMBIO AQUÍ
-  }
+  private firestore = inject(Firestore); // ✅ Corrección aquí
 
   // 📊 Obtener estadísticas generales
   obtenerEstadisticas(): Observable<Estadisticas> {
@@ -30,7 +26,7 @@ export class EstadisticasService {
           const envios = snapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
-            fecha_envio: doc.data()['fecha_envio']?.toDate?.() || doc.data()['fecha_envio']
+            fecha_envio: (doc.data()['fecha_envio'] as any)?.toDate?.() || doc.data()['fecha_envio']
           })) as Envio[];
 
           const stats = this.calcularEstadisticas(envios);
@@ -54,7 +50,6 @@ export class EstadisticasService {
       ? Math.round((entregados / totalEnvios) * 100)
       : 0;
 
-    // Agrupar envíos por día (últimos 7 días)
     const enviosPorDia = this.agruparPorDia(envios);
 
     return {
@@ -83,10 +78,7 @@ export class EstadisticasService {
         return fechaEnvio.toISOString().split('T')[0] === fechaStr;
       }).length;
 
-      ultimos7Dias.push({
-        fecha: fechaStr,
-        cantidad
-      });
+      ultimos7Dias.push({ fecha: fechaStr, cantidad });
     }
 
     return ultimos7Dias;
@@ -107,7 +99,7 @@ export class EstadisticasService {
           const envios = snapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
-            fecha_envio: doc.data()['fecha_envio']?.toDate?.() || doc.data()['fecha_envio']
+            fecha_envio: (doc.data()['fecha_envio'] as any)?.toDate?.() || doc.data()['fecha_envio']
           })) as Envio[];
 
           const stats = this.calcularEstadisticas(envios);
