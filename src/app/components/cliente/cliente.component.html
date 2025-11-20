@@ -1,6 +1,6 @@
 <div class="cliente-container">
   <header class="page-header">
-    <h1>📋 Mis Envíos</h1>
+    <h1> Mis Envíos</h1>
     <p>Historial y seguimiento de tus paquetes</p>
   </header>
 
@@ -18,21 +18,21 @@
       [class.active]="filtroActual === 'pendiente'"
       (click)="filtrar('pendiente')"
     >
-      ⏳ Pendientes
+       Pendientes
     </button>
     <button
       class="filter-btn"
       [class.active]="filtroActual === 'en_transito'"
       (click)="filtrar('en_transito')"
     >
-      🚚 En Tránsito
+       En Tránsito
     </button>
     <button
       class="filter-btn"
       [class.active]="filtroActual === 'entregado'"
       (click)="filtrar('entregado')"
     >
-      ✅ Entregados
+       Entregados
     </button>
   </div>
 

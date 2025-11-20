@@ -4,11 +4,14 @@ import { EnvioService } from '../../services/envio.service';
 import { AuthService } from '../../services/auth.service';
 import { Envio, EstadoEnvio } from '../../models/models';
 
+
 @Component({
   selector: 'app-repartidor',
   standalone: true,
   imports: [CommonModule],
   template: `
+
+
     <div class="repartidor-container">
       <header class="page-header">
         <h1>🚚 Mis Entregas</h1>
@@ -161,7 +164,7 @@ export class RepartidorComponent implements OnInit {
 
   constructor(
     private envioService: EnvioService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -193,4 +196,5 @@ export class RepartidorComponent implements OnInit {
       console.error(error);
     }
   }
+
 }

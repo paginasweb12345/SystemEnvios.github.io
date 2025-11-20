@@ -2,7 +2,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h2>📦 Envíos</h2>
+      <h2> Envíos</h2>
 
       <div class="user-info" *ngIf="currentUser">
         <p class="user-name">{{ currentUser.nombre }}</p>
@@ -15,29 +15,29 @@
     <nav class="sidebar-nav">
       <!-- Administrador -->
       <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/admin" routerLinkActive="active">
-        📊 Panel Admin
+         Panel Admin
       </a>
       <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/envios" routerLinkActive="active">
-        📦 Todos los Envíos
+         Todos los Envíos
       </a>
 
       <!-- Cliente -->
       <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/cliente" routerLinkActive="active">
-        📋 Mis Envíos
+         Mis Envíos
       </a>
       <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/nuevo-envio" routerLinkActive="active">
-        ➕ Nuevo Envío
+        Nuevo Envío
       </a>
 
       <!-- Repartidor -->
       <a *ngIf="currentUser?.rol === 'repartidor'" routerLink="/dashboard/repartidor" routerLinkActive="active">
-        🚚 Mis Entregas
+         Mis Entregas
       </a>
 
       <hr />
 
       <button class="btn-logout" (click)="logout()">
-        🚪 Cerrar Sesión
+         Cerrar Sesión
       </button>
     </nav>
   </aside>

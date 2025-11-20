@@ -26,21 +26,21 @@ import { Estadisticas, Envio } from '../../models/models';
       <section *ngIf="mostrarVista==='estadisticas' && estadisticas" class="dashboard">
         <div class="cards-grid">
           <div class="card total">
-            <div class="card-icon">📦</div>
+            <div class="card-icon"></div>
             <div class="card-content">
               <h3>{{ estadisticas.totalEnvios }}</h3>
               <p>Total Envíos</p>
             </div>
           </div>
           <div class="card success">
-            <div class="card-icon">✅</div>
+            <div class="card-icon"></div>
             <div class="card-content">
               <h3>{{ estadisticas.entregados }}</h3>
               <p>Entregados</p>
             </div>
           </div>
           <div class="card transit">
-            <div class="card-icon">🚚</div>
+            <div class="card-icon"></div>
             <div class="card-content">
               <h3>{{ estadisticas.enTransito }}</h3>
               <p>En Tránsito</p>
@@ -54,14 +54,14 @@ import { Estadisticas, Envio } from '../../models/models';
             </div>
           </div>
           <div class="card asignados">
-            <div class="card-icon">👤</div>
+            <div class="card-icon"></div>
             <div class="card-content">
               <h3>{{ estadisticas.enviosAsignados }}</h3>
               <p>Asignados</p>
             </div>
           </div>
           <div class="card sin-asignar">
-            <div class="card-icon">❌</div>
+            <div class="card-icon"></div>
             <div class="card-content">
               <h3>{{ estadisticas.enviosSinAsignar }}</h3>
               <p>Sin Asignar</p>
@@ -71,7 +71,7 @@ import { Estadisticas, Envio } from '../../models/models';
 
         <div class="charts">
           <div class="chart-bar">
-            <h2>📅 Envíos últimos 7 días</h2>
+            <h2> Envíos últimos 7 días</h2>
             <div class="bar-chart">
               <div *ngFor="let dia of estadisticas.enviosPorDia; trackBy: trackByFecha" class="bar-item">
                 <div class="bar" [style.height.%]="getBarHeight(dia.cantidad)">
@@ -83,7 +83,7 @@ import { Estadisticas, Envio } from '../../models/models';
           </div>
 
           <div class="chart-progress">
-            <h2>📈 Porcentaje de Cumplimiento</h2>
+            <h2>Porcentaje de Cumplimiento</h2>
             <div class="progress-container">
               <div class="progress-fill" [style.width.%]="estadisticas.porcentajeCumplimiento">
                 {{ estadisticas.porcentajeCumplimiento }}%
@@ -95,7 +95,7 @@ import { Estadisticas, Envio } from '../../models/models';
 
       <!-- DASHBOARD ENVÍOS -->
       <section *ngIf="mostrarVista==='envios'" class="envios-section">
-        <h2>📦 Lista de Envíos</h2>
+        <h2> Lista de Envíos</h2>
         <div *ngIf="envios.length===0" class="empty">No hay envíos registrados</div>
         <div *ngIf="envios.length>0" class="table-responsive">
           <table class="envios-table">

@@ -1,6 +1,6 @@
 <div class="register-container">
   <div class="register-card">
-    <div class="logo">📦</div>
+    <div class="logo"></div>
     <h1>Crear Cuenta</h1>
     <p class="subtitle">Regístrate en el sistema de envíos</p>
 
@@ -12,7 +12,7 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
       <div class="form-group">
-        <label>👤 Nombre Completo</label>
+        <label> Nombre Completo</label>
         <input
           type="text"
           formControlName="nombre"
@@ -22,7 +22,7 @@
       </div>
 
       <div class="form-group">
-        <label>📧 Correo Electrónico</label>
+        <label> Correo Electrónico</label>
         <input
           type="email"
           formControlName="email"
@@ -32,7 +32,7 @@
       </div>
 
       <div class="form-group">
-        <label>📱 Teléfono (opcional)</label>
+        <label> Teléfono (opcional)</label>
         <input
           type="tel"
           formControlName="telefono"
@@ -41,7 +41,7 @@
       </div>
 
       <div class="form-group">
-        <label>🔒 Contraseña</label>
+        <label> Contraseña</label>
         <input
           type="password"
           formControlName="password"
@@ -51,7 +51,7 @@
       </div>
 
       <div class="form-group">
-        <label>🎭 Tipo de Usuario</label>
+        <label> Tipo de Usuario</label>
         <select formControlName="rol">
           <option value="cliente">Cliente</option>
           <option value="repartidor">Repartidor</option>
@@ -67,7 +67,7 @@
         @if (loading) {
           <span>Registrando...</span>
         } @else {
-          <span>✅ Crear Cuenta</span>
+          <span> Crear Cuenta</span>
         }
       </button>
     </form>

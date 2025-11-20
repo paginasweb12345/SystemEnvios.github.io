@@ -57,6 +57,7 @@ export const routes: Routes = [
         component: AdminComponent,
         canActivate: [roleGuard(['administrador'])]
       }
+
     ]
   },
   {

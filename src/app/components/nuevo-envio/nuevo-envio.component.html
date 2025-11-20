@@ -1,22 +1,22 @@
 <div class="nuevo-envio-container">
   <header class="page-header">
-    <h1>➕ Nuevo Envío</h1>
+    <h1> Nuevo Envío</h1>
     <p>Registra un nuevo paquete para enviar</p>
   </header>
 
   <div *ngIf="successMessage" class="alert alert-success">
-    ✅ {{ successMessage }}
+     {{ successMessage }}
   </div>
 
   <div *ngIf="errorMessage" class="alert alert-error">
-    ❌ {{ errorMessage }}
+     {{ errorMessage }}
   </div>
 
   <div class="form-card">
     <form [formGroup]="envioForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
         <div class="form-group">
-          <label>📦 Remitente *</label>
+          <label> Remitente *</label>
           <input
             type="text"
             formControlName="remitente"
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-          <label>👤 Destinatario *</label>
+          <label> Destinatario *</label>
           <input
             type="text"
             formControlName="destinatario"
@@ -47,7 +47,7 @@
       </div>
 
       <div class="form-group">
-        <label>📍 Dirección de Entrega *</label>
+        <label> Dirección de Entrega *</label>
         <input
           type="text"
           formControlName="direccion"
@@ -63,7 +63,7 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>📞 Teléfono (opcional)</label>
+          <label> Teléfono (opcional)</label>
           <input
             type="tel"
             formControlName="telefono"
@@ -72,7 +72,7 @@
         </div>
 
         <div class="form-group">
-          <label>📅 Fecha de Envío *</label>
+          <label> Fecha de Envío *</label>
           <input
             type="date"
             formControlName="fecha_envio"
@@ -87,7 +87,7 @@
       </div>
 
       <div class="form-group">
-        <label>💰 Costo del Envío (S/.) *</label>
+        <label> Costo del Envío (S/.) *</label>
         <input
           type="number"
           formControlName="costo"
@@ -104,7 +104,7 @@
       </div>
 
       <div class="form-group">
-        <label>📝 Descripción del Paquete (opcional)</label>
+        <label> Descripción del Paquete (opcional)</label>
         <textarea
           formControlName="descripcion"
           placeholder="Ej: Caja mediana con documentos"
@@ -118,7 +118,7 @@
           class="btn-secondary"
           routerLink="/dashboard/cliente"
         >
-          ❌ Cancelar
+           Cancelar
         </button>
         <button
           type="submit"
@@ -126,7 +126,7 @@
           [disabled]="envioForm.invalid || loading"
         >
           <span *ngIf="loading">Guardando...</span>
-          <span *ngIf="!loading">✅ Registrar Envío</span>
+          <span *ngIf="!loading"> Registrar Envío</span>
         </button>
       </div>
     </form>
