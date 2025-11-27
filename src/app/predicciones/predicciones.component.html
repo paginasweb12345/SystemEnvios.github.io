@@ -1,17 +1,18 @@
 <div class="contenedor" *ngIf="!cargando; else loading">
   
-  <h2 class="titulo">📊 Panel de Predicciones y Analítica Avanzada</h2>
+  <h2 class="titulo">📊 Panel de Analítica Inteligente y Predicciones</h2>
+  <p class="subtitulo">Resumen avanzado del rendimiento de los envíos, tendencias y proyecciones.</p>
 
   <!-- === TARJETAS PRINCIPALES === -->
   <div class="grid">
-    <div class="card">
+    <div class="card highlight">
       <h3>Total de Envíos</h3>
       <p class="numero">{{ stats.totalEnvios }}</p>
     </div>
 
-    <div class="card">
+    <div class="card highlight">
       <h3>Porcentaje de Cumplimiento</h3>
-      <p class="numero">{{ stats.porcentajeCumplimiento }}%</p>
+      <p class="numero verde">{{ stats.porcentajeCumplimiento }}%</p>
     </div>
 
     <div class="card">
@@ -21,70 +22,79 @@
 
     <div class="card">
       <h3>Predicción para Mañana</h3>
-      <p class="numero">{{ prediccionManana }}</p>
+      <p class="numero azul">{{ prediccionManana }}</p>
     </div>
   </div>
 
   <!-- === DETALLES AVANZADOS === -->
+  <h3 class="seccion-titulo">🔍 Análisis Detallado</h3>
+
   <div class="grid-doble">
     
     <div class="card">
       <h3>Día con Mayor Demanda</h3>
-      <p class="numero" *ngIf="diaPico">
-        {{ diaPico?.fecha }} — {{ diaPico?.cantidad }} envíos
+      <p class="numero grande" *ngIf="diaPico">
+        📅 {{ diaPico.fecha }}  
+        <br>
+        <span class="resaltado">{{ diaPico.cantidad }} envíos</span>
       </p>
       <p *ngIf="!diaPico">Sin datos</p>
     </div>
 
     <div class="card">
       <h3>Tiempo Promedio de Entrega</h3>
-      <p class="numero">{{ tiempoPromedioEntrega }} días</p>
+      <p class="numero grande">{{ tiempoPromedioEntrega }} días</p>
     </div>
 
     <div class="card">
       <h3>Porcentaje de Devoluciones</h3>
-      <p class="numero">{{ porcentajeDevoluciones }}%</p>
+      <p class="numero rojo grande">{{ porcentajeDevoluciones }}%</p>
     </div>
 
     <div class="card">
       <h3>Envíos por Estado</h3>
-      <ul>
+      <ul class="estado-lista">
         <li>📦 Entregados: <span>{{ stats.entregados }}</span></li>
         <li>🚚 En tránsito: <span>{{ stats.enTransito }}</span></li>
         <li>⏳ Pendientes: <span>{{ stats.pendientes }}</span></li>
-        <li>🔁 Devueltos: <span>{{ stats.devueltos }}</span></li>
+        <li>🔁 Devueltos: <span class="rojo">{{ stats.devueltos }}</span></li>
       </ul>
     </div>
 
   </div>
 
   <!-- === DESTINOS FRECUENTES === -->
-  <div class="card full">
-    <h3>📍 Destinos Más Frecuentes</h3>
+  <h3 class="seccion-titulo">📍 Destinos Más Frecuentes</h3>
 
+  <div class="card full">
     <p *ngIf="destinosFrecuentes.length === 0">Sin datos</p>
 
-    <ul *ngIf="destinosFrecuentes.length > 0">
+    <ul *ngIf="destinosFrecuentes.length > 0" class="lista-frecuentes">
       <li *ngFor="let d of destinosFrecuentes">
-        {{ d.destino }} — <strong>{{ d.cantidad }}</strong> envíos
+        <span class="destino">{{ d.destino }}</span>
+        <span class="badge">{{ d.cantidad }} envíos</span>
       </li>
     </ul>
   </div>
 
   <!-- === CLASIFICACIÓN DE COSTOS === -->
-  <div class="card full">
-    <h3>💰 Clasificación por Costos</h3>
+  <h3 class="seccion-titulo">💰 Clasificación de Costos</h3>
 
-    <ul>
+  <div class="card full">
+    <ul class="costo-lista">
       <li *ngFor="let c of costosClasificados">
-        {{ c.rango }} — <strong>{{ c.cantidad }}</strong> envíos
+        <span>{{ c.rango }}</span>
+        <span class="badge secundario">{{ c.cantidad }}</span>
       </li>
     </ul>
   </div>
 
 </div>
 
-<!-- === LOADING === -->
+<!-- === LOADING SCREEN === -->
 <ng-template #loading>
-  <div class="loading">Cargando análisis...</div>
+  <div class="loading">
+    <div class="spinner"></div>
+    <p>Cargando análisis avanzado...</p>
+  </div>
 </ng-template>
