@@ -17,9 +17,10 @@
       <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/admin" routerLinkActive="active">
          Panel Admin
       </a>
-      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/envios" routerLinkActive="active">
-         Todos los Envíos
+      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/predicciones" routerLinkActive="active">
+        Mis predicciones
       </a>
+
 
       <!-- Cliente -->
       <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/cliente" routerLinkActive="active">
@@ -33,6 +34,7 @@
       <a *ngIf="currentUser?.rol === 'repartidor'" routerLink="/dashboard/repartidor" routerLinkActive="active">
          Mis Entregas
       </a>
+
 
       <hr />
 

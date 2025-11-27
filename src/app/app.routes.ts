@@ -7,6 +7,9 @@ import { NuevoEnvioComponent } from './components/nuevo-envio/nuevo-envio.compon
 import { RepartidorComponent } from './components/repartidor/repartidor.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { authGuard, roleGuard } from './guards/auth.guard';
+import { PrediccionesComponent } from './predicciones/predicciones.component';
+
+
 
 export const routes: Routes = [
   {
@@ -55,6 +58,11 @@ export const routes: Routes = [
       {
         path: 'envios',
         component: AdminComponent,
+        canActivate: [roleGuard(['administrador'])]
+      },
+      {
+        path: 'predicciones',
+        component: PrediccionesComponent,
         canActivate: [roleGuard(['administrador'])]
       }
 

@@ -1,0 +1,72 @@
+.contenedor {
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.grid-doble {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 18px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #444;
+}
+
+.numero {
+  font-size: 32px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.full {
+  margin-top: 20px;
+}
+
+ul {
+  padding-left: 15px;
+}
+
+ul li {
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 22px;
+  padding: 40px;
+  font-weight: bold;
+}
