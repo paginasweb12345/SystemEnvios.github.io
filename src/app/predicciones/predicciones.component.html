@@ -1,9 +1,8 @@
 <div class="contenedor" *ngIf="!cargando; else loading">
   
-  <h2 class="titulo"> Panel de Analítica Inteligente y Predicciones</h2>
-  <p class="subtitulo">Resumen avanzado del rendimiento de los envíos, tendencias y proyecciones.</p>
+  <h2 class="titulo">Panel de Analítica Inteligente y Predicciones</h2>
+  <p class="subtitulo">Resumen del rendimiento de los envíos y proyecciones.</p>
 
-  <!-- === TARJETAS PRINCIPALES === -->
   <div class="grid">
     <div class="card highlight">
       <h3>Total de Envíos</h3>
@@ -26,15 +25,14 @@
     </div>
   </div>
 
-  <!-- === DETALLES AVANZADOS === -->
-  <h3 class="seccion-titulo"> Análisis Detallado</h3>
+  <h3 class="seccion-titulo">Análisis Detallado</h3>
 
   <div class="grid-doble">
     
     <div class="card">
       <h3>Día con Mayor Demanda</h3>
       <p class="numero grande" *ngIf="diaPico">
-         {{ diaPico.fecha }}  
+        {{ diaPico.fecha }}  
         <br>
         <span class="resaltado">{{ diaPico.cantidad }} envíos</span>
       </p>
@@ -54,17 +52,16 @@
     <div class="card">
       <h3>Envíos por Estado</h3>
       <ul class="estado-lista">
-        <li> Entregados: <span>{{ stats.entregados }}</span></li>
-        <li> En tránsito: <span>{{ stats.enTransito }}</span></li>
-        <li> Pendientes: <span>{{ stats.pendientes }}</span></li>
-        <li> Devueltos: <span class="rojo">{{ stats.devueltos }}</span></li>
+        <li>Entregados: <span>{{ stats.entregados }}</span></li>
+        <li>En tránsito: <span>{{ stats.enTransito }}</span></li>
+        <li>Pendientes: <span>{{ stats.pendientes }}</span></li>
+        <li>Devueltos: <span class="rojo">{{ stats.devueltos }}</span></li>
       </ul>
     </div>
 
   </div>
 
-  <!-- === DESTINOS FRECUENTES === -->
-  <h3 class="seccion-titulo"> Destinos Más Frecuentes</h3>
+  <h3 class="seccion-titulo">Destinos Más Frecuentes</h3>
 
   <div class="card full">
     <p *ngIf="destinosFrecuentes.length === 0">Sin datos</p>
@@ -77,8 +74,7 @@
     </ul>
   </div>
 
-  <!-- === CLASIFICACIÓN DE COSTOS === -->
-  <h3 class="seccion-titulo"> Clasificación de Costos</h3>
+  <h3 class="seccion-titulo">Clasificación de Costos</h3>
 
   <div class="card full">
     <ul class="costo-lista">
@@ -91,10 +87,9 @@
 
 </div>
 
-<!-- === LOADING SCREEN === -->
 <ng-template #loading>
   <div class="loading">
     <div class="spinner"></div>
-    <p>Cargando análisis avanzado...</p>
+    <p>Cargando análisis...</p>
   </div>
 </ng-template>
