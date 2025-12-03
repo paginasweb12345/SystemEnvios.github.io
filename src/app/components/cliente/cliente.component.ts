@@ -37,18 +37,18 @@ export class ClienteComponent implements OnInit {
           this.filtrar(this.filtroActual);
         },
         error: (error) => {
-          console.error('❌ Error al obtener envíos:', error);
+          console.error(' Error al obtener envíos:', error);
         }
       });
 
       // Obtener repartidores disponibles
       this.usuarioService.obtenerRepartidores().subscribe({
         next: (repartidores) => {
-          console.log('🚚 Repartidores disponibles:', repartidores);
+          console.log(' Repartidores disponibles:', repartidores);
           this.repartidores = repartidores;
         },
         error: (error) => {
-          console.error('❌ Error al obtener repartidores:', error);
+          console.error(' Error al obtener repartidores:', error);
         }
       });
     }
@@ -65,17 +65,17 @@ export class ClienteComponent implements OnInit {
 
   getEstadoLabel(estado: EstadoEnvio): string {
     const labels = {
-      pendiente: '⏳ Pendiente',
-      en_transito: '🚚 En Tránsito',
-      entregado: '✅ Entregado',
-      devuelto: '↩️ Devuelto'
+      pendiente: ' Pendiente',
+      en_transito: ' En Tránsito',
+      entregado: ' Entregado',
+      devuelto: ' Devuelto'
     };
     return labels[estado];
   }
 
   async asignarRepartidor(envio: Envio) {
     if (this.repartidores.length === 0) {
-      alert('❌ No hay repartidores disponibles. Registra un repartidor primero.');
+      alert(' No hay repartidores disponibles. Registra un repartidor primero.');
       return;
     }
 
@@ -85,10 +85,10 @@ export class ClienteComponent implements OnInit {
       if (confirmar) {
         try {
           await this.envioService.asignarRepartidor(envio.id!, this.repartidores[0].uid);
-          alert('✅ Envío asignado exitosamente al repartidor ' + this.repartidores[0].nombre);
+          alert(' Envío asignado exitosamente al repartidor ' + this.repartidores[0].nombre);
         } catch (error) {
           console.error('Error:', error);
-          alert('❌ Error al asignar repartidor');
+          alert(' Error al asignar repartidor');
         }
       }
     } else {
@@ -104,10 +104,10 @@ export class ClienteComponent implements OnInit {
         if (index >= 0 && index < this.repartidores.length) {
           try {
             await this.envioService.asignarRepartidor(envio.id!, this.repartidores[index].uid);
-            alert('✅ Envío asignado exitosamente al repartidor ' + this.repartidores[index].nombre);
+            alert(' Envío asignado exitosamente al repartidor ' + this.repartidores[index].nombre);
           } catch (error) {
             console.error('Error:', error);
-            alert('❌ Error al asignar repartidor');
+            alert(' Error al asignar repartidor');
           }
         }
       }
@@ -120,7 +120,7 @@ export class ClienteComponent implements OnInit {
       : 'Sin asignar';
 
     alert(`
-      📦 Detalle del Envío
+       Detalle del Envío
       
       Destinatario: ${envio.destinatario}
       Dirección: ${envio.direccion}

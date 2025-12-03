@@ -14,9 +14,9 @@ import { Estadisticas, Envio } from '../models/models';
   providedIn: 'root'
 })
 export class EstadisticasService {
-  private firestore = inject(Firestore); // ✅ Corrección aquí
+  private firestore = inject(Firestore); // Corrección aquí
 
-  // 📊 Obtener estadísticas generales
+  //  Obtener estadísticas generales
   obtenerEstadisticas(): Observable<Estadisticas> {
     const ref = collection(this.firestore, 'envios');
 
@@ -38,7 +38,7 @@ export class EstadisticasService {
     });
   }
 
-  // 📈 Calcular estadísticas
+  // Calcular estadísticas
   private calcularEstadisticas(envios: Envio[]): Estadisticas {
     const totalEnvios = envios.length;
     const entregados = envios.filter(e => e.estado === 'entregado').length;
@@ -63,7 +63,7 @@ export class EstadisticasService {
     };
   }
 
-  // 📅 Agrupar envíos por día
+  //  Agrupar envíos por día
   private agruparPorDia(envios: Envio[]): { fecha: string; cantidad: number }[] {
     const hoy = new Date();
     const ultimos7Dias: { fecha: string; cantidad: number }[] = [];
@@ -84,7 +84,7 @@ export class EstadisticasService {
     return ultimos7Dias;
   }
 
-  // 📊 Estadísticas por rango de fechas
+  //  Estadísticas por rango de fechas
   obtenerEstadisticasPorRango(fechaInicio: Date, fechaFin: Date): Observable<Estadisticas> {
     const ref = collection(this.firestore, 'envios');
     const q = query(

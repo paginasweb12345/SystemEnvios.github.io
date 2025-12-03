@@ -1,4 +1,4 @@
-// 📦 Modelo de Envío
+//  Modelo de Envío
 export interface Envio {
   id?: string;
   remitente: string;
@@ -13,7 +13,7 @@ export interface Envio {
   descripcion?: string;
 }
 
-// 📊 Estados posibles del envío
+// Estados posibles del envío
 export type EstadoEnvio = 'pendiente' | 'en_transito' | 'entregado' | 'devuelto';
 
 // 👤 Modelo de Usuario
@@ -26,10 +26,10 @@ export interface Usuario {
   createdAt?: Date | string;
 }
 
-// 🎭 Roles de usuario
+// Roles de usuario
 export type RolUsuario = 'cliente' | 'repartidor' | 'administrador';
 
-// 📈 Estadísticas para el panel administrativo
+// Estadísticas para el panel administrativo
 export interface Estadisticas {
   totalEnvios: number;
   entregados: number;
@@ -40,7 +40,7 @@ export interface Estadisticas {
   enviosPorDia: { fecha: string; cantidad: number }[];
 }
 
-// 🔐 Datos de autenticación
+//  Datos de autenticación
 export interface LoginData {
   email: string;
   password: string;

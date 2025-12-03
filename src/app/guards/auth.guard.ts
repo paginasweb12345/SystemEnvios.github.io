@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-// 🔐 Guard para rutas protegidas
+//  Guard para rutas protegidas
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = () => {
   return false;
 };
 
-// 🎭 Guard para roles específicos
+//  Guard para roles específicos
 export const roleGuard = (rolesPermitidos: string[]): CanActivateFn => {
   return () => {
     const authService = inject(AuthService);

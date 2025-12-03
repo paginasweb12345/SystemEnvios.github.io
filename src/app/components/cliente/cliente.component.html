@@ -39,7 +39,7 @@
   <!-- Lista de envíos -->
   @if (enviosFiltrados.length === 0) {
     <div class="empty-state">
-      <p>📦 No tienes envíos {{ filtroActual !== 'todos' ? 'con este estado' : 'registrados' }}</p>
+      <p> No tienes envíos {{ filtroActual !== 'todos' ? 'con este estado' : 'registrados' }}</p>
     </div>
   } @else {
     <div class="envios-grid">
@@ -53,7 +53,7 @@
           </div>
           <div class="envio-body">
             <p class="destinatario">
-              <strong>📍 Destinatario:</strong> {{ envio.destinatario }}
+              <strong> Destinatario:</strong> {{ envio.destinatario }}
             </p>
             <p class="direccion">{{ envio.direccion }}</p>
             @if (envio.descripcion) {
@@ -64,17 +64,17 @@
             <span class="costo">S/. {{ envio.costo | number:'1.2-2' }}</span>
             <div class="envio-actions">
               <button class="btn-ver" (click)="verDetalle(envio)">
-                👁️ Ver detalle
+                 Ver detalle
               </button>
               
               @if (envio.estado === 'pendiente') {
                 <button class="btn-asignar" (click)="asignarRepartidor(envio)">
-                  🚚 Enviar con Repartidor
+                   Enviar con Repartidor
                 </button>
               }
               
               @if (envio.repartidorId && envio.estado !== 'pendiente') {
-                <span class="badge-info">✅ Asignado</span>
+                <span class="badge-info"> Asignado</span>
               }
             </div>
           </div>

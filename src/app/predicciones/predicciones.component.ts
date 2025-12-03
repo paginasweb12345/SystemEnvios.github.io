@@ -35,7 +35,7 @@ export class PrediccionesComponent implements OnInit {
     });
   }
 
-  // 🔥 CONVERSIÓN SEGURA DE FECHA
+  //  CONVERSIÓN SEGURA DE FECHA
   private convertirFecha(fecha: any): Date | null {
     if (!fecha) return null;
 
@@ -97,25 +97,25 @@ export class PrediccionesComponent implements OnInit {
   }
 
 
-  // 🔥 CÁLCULOS AVANZADOS
+  //  CÁLCULOS AVANZADOS
   calculosAvanzados() {
     if (!this.stats || this.stats.enviosPorDia.length === 0) return;
 
-    // ⭐ Promedio por día
+    //  Promedio por día
     const totalDias = this.stats.enviosPorDia.length;
     const totalEnvios = this.stats.totalEnvios;
     this.promedioPorDia = +(totalEnvios / totalDias).toFixed(2);
 
-    // ⭐ Día pico
+    //  Día pico
     this.diaPico = this.stats.enviosPorDia.reduce((max, dia) =>
       dia.cantidad > max.cantidad ? dia : max
     );
 
-    // ⭐ Predicción mañana
+    //  Predicción mañana
     const tendencia = this.diaPico.cantidad > this.promedioPorDia ? 1.2 : 1.0;
     this.prediccionManana = Math.round(this.promedioPorDia * tendencia);
 
-    // ⭐ Tiempo promedio de entrega (simulado)
+    //  Tiempo promedio de entrega (simulado)
     const tiempos: number[] = [];
 
     this.envios.forEach(e => {
@@ -134,12 +134,12 @@ export class PrediccionesComponent implements OnInit {
     this.tiempoPromedioEntrega =
       tiempos.length > 0 ? +(tiempos.reduce((a, b) => a + b, 0) / tiempos.length).toFixed(1) : 0;
 
-    // ⭐ Porcentaje de devoluciones
+    //  Porcentaje de devoluciones
     this.porcentajeDevoluciones = this.stats.totalEnvios > 0
       ? +(this.stats.devueltos * 100 / this.stats.totalEnvios).toFixed(2)
       : 0;
 
-    // ⭐ Destinos frecuentes
+    // Destinos frecuentes
     const mapaDestinos = new Map<string, number>();
 
     this.envios.forEach(e => {
@@ -151,7 +151,7 @@ export class PrediccionesComponent implements OnInit {
       .sort((a, b) => b.cantidad - a.cantidad)
       .slice(0, 5);
 
-    // ⭐ Clasificación por costo
+    //  Clasificación por costo
     const bajo = this.envios.filter(e => e.costo <= 20).length;
     const medio = this.envios.filter(e => e.costo > 20 && e.costo <= 50).length;
     const alto = this.envios.filter(e => e.costo > 50).length;

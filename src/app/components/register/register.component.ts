@@ -38,7 +38,7 @@ export class RegisterComponent {
     try {
       const { rol, ...data } = this.registerForm.value;
 
-      // 👇 CORREGIDO — ahora acepta 'administrador'
+      //  CORREGIDO — ahora acepta 'administrador'
       await this.authService.register(
         data,
         rol as 'cliente' | 'repartidor' | 'administrador'

@@ -14,13 +14,13 @@ import { Envio, EstadoEnvio } from '../../models/models';
 
     <div class="repartidor-container">
       <header class="page-header">
-        <h1>🚚 Mis Entregas</h1>
+        <h1> Mis Entregas</h1>
         <p>Gestiona tus envíos asignados</p>
       </header>
 
       @if (envios.length === 0) {
         <div class="empty-state">
-          <p>📦 No tienes entregas asignadas</p>
+          <p> No tienes entregas asignadas</p>
         </div>
       } @else {
         <div class="envios-list">
@@ -51,10 +51,10 @@ import { Envio, EstadoEnvio } from '../../models/models';
                   (change)="actualizarEstado(envio.id!, $event)"
                   class="estado-select"
                 >
-                  <option value="pendiente">⏳ Pendiente</option>
-                  <option value="en_transito">🚚 En Tránsito</option>
-                  <option value="entregado">✅ Entregado</option>
-                  <option value="devuelto">↩️ Devuelto</option>
+                  <option value="pendiente"> Pendiente</option>
+                  <option value="en_transito"> En Tránsito</option>
+                  <option value="entregado"> Entregado</option>
+                  <option value="devuelto"> Devuelto</option>
                 </select>
               </div>
             </div>
