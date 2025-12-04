@@ -1,0 +1,20 @@
+.footer {
+  background: #0a4d8c;
+  color: #ffffff;
+  padding: 15px 0;
+  text-align: center;
+  margin-top: 40px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+.footer strong {
+  color: #ffdd57;
+  font-weight: 600;
+}
