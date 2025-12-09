@@ -1,7 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from '@angular/fire/auth';
+import { 
+  Auth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup
+} from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
 import { Usuario, RegisterData, LoginData } from '../models/models';
 
@@ -20,6 +28,7 @@ export class AuthService {
     this.initAuthListener();
   }
 
+  // LISTENER DE SESIÓN
   private initAuthListener() {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
@@ -31,6 +40,7 @@ export class AuthService {
     });
   }
 
+  // REGISTRO NORMAL
   async register(data: RegisterData, rol: 'cliente' | 'repartidor' | 'administrador' = 'cliente'): Promise<void> {
     try {
       const credential = await createUserWithEmailAndPassword(
@@ -51,13 +61,13 @@ export class AuthService {
       await setDoc(doc(this.firestore, 'usuarios', credential.user.uid), usuario);
       this.currentUserSubject.next(usuario);
 
-      // Redirigir según rol
       this.redirectByRole(rol);
     } catch (error: any) {
       throw this.handleError(error);
     }
   }
 
+  // LOGIN NORMAL
   async login(data: LoginData): Promise<void> {
     try {
       const credential = await signInWithEmailAndPassword(
@@ -70,14 +80,46 @@ export class AuthService {
       if (!userData) throw new Error('No se pudo obtener los datos del usuario');
 
       this.currentUserSubject.next(userData);
-
-      // Redirigir según rol
       this.redirectByRole(userData.rol);
+
     } catch (error: any) {
       throw this.handleError(error);
     }
   }
 
+  // 🚀 LOGIN CON GOOGLE
+  async loginWithGoogle(): Promise<void> {
+    try {
+      const provider = new GoogleAuthProvider();
+      const credential = await signInWithPopup(this.auth, provider);
+      const user = credential.user;
+
+      // Verificar si ya existe en Firestore
+      let userData = await this.getUserData(user.uid);
+
+      if (!userData) {
+        // Si es primera vez, lo registramos
+        userData = {
+          uid: user.uid,
+          email: user.email || '',
+          nombre: user.displayName || '',
+          telefono: user.phoneNumber || '',
+          rol: 'cliente', // Rol por defecto
+          createdAt: new Date()
+        };
+
+        await setDoc(doc(this.firestore, 'usuarios', user.uid), userData);
+      }
+
+      this.currentUserSubject.next(userData);
+      this.redirectByRole(userData.rol);
+
+    } catch (error: any) {
+      throw this.handleError(error);
+    }
+  }
+
+  // LOGOUT
   async logout(): Promise<void> {
     try {
       await signOut(this.auth);
@@ -88,6 +130,7 @@ export class AuthService {
     }
   }
 
+  // OBTENER DATOS DEL USUARIO DESDE FIRESTORE
   async getUserData(uid: string): Promise<Usuario | null> {
     try {
       const userDoc = await getDoc(doc(this.firestore, 'usuarios', uid));
@@ -113,6 +156,7 @@ export class AuthService {
     return this.currentUserSubject.value?.rol === rol;
   }
 
+  // REDIRECCIÓN SEGÚN ROL
   private redirectByRole(rol: 'cliente' | 'repartidor' | 'administrador') {
     if (rol === 'cliente') {
       this.router.navigate(['/dashboard/cliente']);
@@ -123,6 +167,7 @@ export class AuthService {
     }
   }
 
+  // MANEJO DE ERRORES
   private handleError(error: any): string {
     switch (error.code) {
       case 'auth/email-already-in-use':

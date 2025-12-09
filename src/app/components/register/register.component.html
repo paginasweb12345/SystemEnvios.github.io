@@ -55,7 +55,7 @@
         <select formControlName="rol">
           <option value="cliente">Cliente</option>
           <option value="repartidor">Repartidor</option>
-          <option value="administrador">Administrador</option> <!-- ✔ AGREGADO -->
+          <option value="administrador">Administrador</option>
         </select>
       </div>
 
@@ -72,9 +72,16 @@
       </button>
     </form>
 
+    <!-- AGREGADO: Botón de Registro con Google -->
+    <button class="btn-google" (click)="loginWithGoogle()">
+      <img src="assets/google.png" class="google-icon">
+      Registrarse con Google
+    </button>
+
     <div class="login-link">
       ¿Ya tienes cuenta? 
       <a routerLink="/login">Inicia sesión aquí</a>
     </div>
+
   </div>
 </div>

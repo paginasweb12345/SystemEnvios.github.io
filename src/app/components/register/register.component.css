@@ -150,3 +150,48 @@ h1 {
     font-size: 3rem;
   }
 }
+
+/* --------------------------------------------------
+   🚀 BOTÓN GOOGLE – DISEÑO MEJORADO, ELEGANTE
+-------------------------------------------------- */
+
+.btn-google {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  background: #ffffff;
+  border: 2px solid #dce2ec;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.btn-google:hover {
+  background: #f0f4f9;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.btn-google:active {
+  transform: scale(0.97);
+}
+
+.google-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  animation: pop 0.3s ease;
+}
+
+/* Pequeña animación elegante */
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

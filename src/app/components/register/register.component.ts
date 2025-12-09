@@ -25,7 +25,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       telefono: [''],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rol: ['cliente', Validators.required]   // Aquí se puede elegir "administrador" también
+      rol: ['cliente', Validators.required]
     });
   }
 
@@ -38,12 +38,25 @@ export class RegisterComponent {
     try {
       const { rol, ...data } = this.registerForm.value;
 
-      //  CORREGIDO — ahora acepta 'administrador'
       await this.authService.register(
         data,
         rol as 'cliente' | 'repartidor' | 'administrador'
       );
 
+    } catch (error: any) {
+      this.errorMessage = error;
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  // 🚀 AGREGADO: Login con Google
+  async loginWithGoogle() {
+    this.loading = true;
+    this.errorMessage = '';
+
+    try {
+      await this.authService.loginWithGoogle();
     } catch (error: any) {
       this.errorMessage = error;
     } finally {
