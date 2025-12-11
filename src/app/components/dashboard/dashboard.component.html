@@ -1,6 +1,14 @@
 <div class="dashboard">
+  <!-- Mobile Menu Button -->
+  <button class="menu-btn" (click)="toggleSidebar()">
+    ☰
+  </button>
+
+  <!-- Overlay for closing sidebar on mobile -->
+  <div class="sidebar-overlay" [class.open]="isSidebarOpen" (click)="closeSidebar()"></div>
+
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" [class.open]="isSidebarOpen">
     <div class="sidebar-header">
       <h2> Envíos</h2>
 
@@ -14,32 +22,41 @@
 
     <nav class="sidebar-nav">
       <!-- Administrador -->
-      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/admin" routerLinkActive="active">
-         Panel Admin
+      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/admin" routerLinkActive="active"
+        (click)="closeSidebar()">
+        Panel Admin
       </a>
-      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/predicciones" routerLinkActive="active">
+      <a *ngIf="currentUser?.rol === 'administrador'" routerLink="/dashboard/predicciones" routerLinkActive="active"
+        (click)="closeSidebar()">
         Mis predicciones
       </a>
 
 
       <!-- Cliente -->
-      <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/cliente" routerLinkActive="active">
-         Mis Envíos
+      <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/cliente" routerLinkActive="active"
+        (click)="closeSidebar()">
+        Mis Envíos
       </a>
-      <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/nuevo-envio" routerLinkActive="active">
+      <a *ngIf="currentUser?.rol === 'cliente'" routerLink="/dashboard/nuevo-envio" routerLinkActive="active"
+        (click)="closeSidebar()">
         Nuevo Envío
       </a>
 
       <!-- Repartidor -->
-      <a *ngIf="currentUser?.rol === 'repartidor'" routerLink="/dashboard/repartidor" routerLinkActive="active">
-         Mis Entregas
+      <a *ngIf="currentUser?.rol === 'repartidor'" routerLink="/dashboard/repartidor" routerLinkActive="active"
+        (click)="closeSidebar()">
+        Mis Entregas
       </a>
 
 
       <hr />
 
+      <hr />
+
+      <a routerLink="/dashboard/ruta-que-no-existe" class="debug-link">Probar Error 404</a>
+
       <button class="btn-logout" (click)="logout()">
-         Cerrar Sesión
+        Cerrar Sesión
       </button>
     </nav>
   </aside>

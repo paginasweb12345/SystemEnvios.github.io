@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Firestore, collection, addDoc, doc, updateDoc, deleteDoc, collectionData, query, where, orderBy, Timestamp } from '@angular/fire/firestore';
 import { Envio, EstadoEnvio } from '../models/models';
 
@@ -13,19 +14,34 @@ export class EnvioService {
   obtenerTodosEnvios(): Observable<Envio[]> {
     const ref = collection(this.firestore, this.coleccion);
     const q = query(ref, orderBy('fecha_envio', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Envio[]>;
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((envios: any[]) => envios.map(envio => ({
+        ...envio,
+        fecha_envio: envio.fecha_envio?.toDate ? envio.fecha_envio.toDate() : envio.fecha_envio
+      })))
+    ) as Observable<Envio[]>;
   }
 
   obtenerEnviosCliente(userId: string): Observable<Envio[]> {
     const ref = collection(this.firestore, this.coleccion);
     const q = query(ref, where('userId', '==', userId), orderBy('fecha_envio', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Envio[]>;
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((envios: any[]) => envios.map(envio => ({
+        ...envio,
+        fecha_envio: envio.fecha_envio?.toDate ? envio.fecha_envio.toDate() : envio.fecha_envio
+      })))
+    ) as Observable<Envio[]>;
   }
 
   obtenerEnviosRepartidor(repartidorId: string): Observable<Envio[]> {
     const ref = collection(this.firestore, this.coleccion);
-    const q = query(ref, where('repartidorId', '==', repartidorId), orderBy('fecha_envio', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Envio[]>;
+    const q = query(ref, where('repartidorId', '==', repartidorId));
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((envios: any[]) => envios.map(envio => ({
+        ...envio,
+        fecha_envio: envio.fecha_envio?.toDate ? envio.fecha_envio.toDate() : envio.fecha_envio
+      })))
+    ) as Observable<Envio[]>;
   }
 
   filtrarPorEstado(estado: EstadoEnvio, userId?: string): Observable<Envio[]> {
@@ -38,7 +54,12 @@ export class EnvioService {
       q = query(ref, where('estado', '==', estado), orderBy('fecha_envio', 'desc'));
     }
 
-    return collectionData(q, { idField: 'id' }) as Observable<Envio[]>;
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((envios: any[]) => envios.map(envio => ({
+        ...envio,
+        fecha_envio: envio.fecha_envio?.toDate ? envio.fecha_envio.toDate() : envio.fecha_envio
+      })))
+    ) as Observable<Envio[]>;
   }
 
   async crearEnvio(envio: Envio): Promise<void> {
@@ -60,11 +81,11 @@ export class EnvioService {
     try {
       const ref = doc(this.firestore, `${this.coleccion}/${id}`);
       const updateData: any = { ...envio };
-      
+
       if (envio.fecha_envio) {
         updateData.fecha_envio = Timestamp.fromDate(new Date(envio.fecha_envio));
       }
-      
+
       await updateDoc(ref, updateData);
     } catch (error) {
       console.error('Error al actualizar envío:', error);

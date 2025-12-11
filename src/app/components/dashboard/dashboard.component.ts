@@ -13,13 +13,22 @@ import { Usuario } from '../../models/models';
 })
 export class DashboardComponent implements OnInit {
   currentUser: Usuario | null = null;
+  isSidebarOpen = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
   }
 
   logout() {

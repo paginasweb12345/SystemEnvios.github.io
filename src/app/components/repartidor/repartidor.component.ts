@@ -4,158 +4,221 @@ import { EnvioService } from '../../services/envio.service';
 import { AuthService } from '../../services/auth.service';
 import { Envio, EstadoEnvio } from '../../models/models';
 
-
 @Component({
   selector: 'app-repartidor',
   standalone: true,
   imports: [CommonModule],
   template: `
-
-
     <div class="repartidor-container">
       <header class="page-header">
-        <h1> Mis Entregas</h1>
+        <h1>Mis Entregas</h1>
         <p>Gestiona tus envíos asignados</p>
       </header>
 
-      @if (envios.length === 0) {
-        <div class="empty-state">
-          <p> No tienes entregas asignadas</p>
-        </div>
-      } @else {
-        <div class="envios-list">
-          @for (envio of envios; track envio.id) {
-            <div class="envio-card" [class]="'estado-' + envio.estado">
-              <div class="envio-header">
-                <div>
-                  <h3>{{ envio.destinatario }}</h3>
-                  <p class="direccion">{{ envio.direccion }}</p>
-                </div>
-                <span class="costo">S/. {{ envio.costo }}</span>
-              </div>
+      <div *ngIf="envios.length === 0" class="empty-state">
+        <p>No tienes entregas asignadas</p>
+      </div>
 
-              <div class="envio-info">
-                <p><strong>Fecha:</strong> {{ envio.fecha_envio | date:'dd/MM/yyyy' }}</p>
-                @if (envio.telefono) {
-                  <p><strong>Teléfono:</strong> {{ envio.telefono }}</p>
-                }
-                @if (envio.descripcion) {
-                  <p><strong>Descripción:</strong> {{ envio.descripcion }}</p>
-                }
-              </div>
+      <div *ngIf="envios.length > 0" class="envios-list">
+        <div *ngFor="let envio of envios; trackBy: trackByEnvioId"
+             class="envio-card" [class]="'estado-' + envio.estado">
 
-              <div class="envio-actions">
-                <span class="estado-actual">{{ getEstadoLabel(envio.estado) }}</span>
-                <select
-                  [value]="envio.estado"
-                  (change)="actualizarEstado(envio.id!, $event)"
-                  class="estado-select"
-                >
-                  <option value="pendiente"> Pendiente</option>
-                  <option value="en_transito"> En Tránsito</option>
-                  <option value="entregado"> Entregado</option>
-                  <option value="devuelto"> Devuelto</option>
-                </select>
-              </div>
+          <div class="envio-header">
+            <div>
+              <h3>{{ envio.destinatario }}</h3>
+              <p class="direccion">{{ envio.direccion }}</p>
             </div>
-          }
+            <span class="costo">S/. {{ envio.costo }}</span>
+          </div>
+
+          <div class="envio-info">
+            <p><strong>Fecha:</strong> {{ envio.fecha_envio | date:'dd/MM/yyyy' }}</p>
+            <p *ngIf="envio.telefono"><strong>Teléfono:</strong> {{ envio.telefono }}</p>
+            <p *ngIf="envio.descripcion"><strong>Descripción:</strong> {{ envio.descripcion }}</p>
+          </div>
+
+          <div class="envio-actions">
+            <span class="estado-actual">{{ getEstadoLabel(envio.estado) }}</span>
+            <select [value]="envio.estado"
+                    (change)="actualizarEstado(envio.id!, $event)"
+                    class="estado-select">
+              <option value="pendiente">Pendiente</option>
+              <option value="en_transito">En Tránsito</option>
+              <option value="entregado">Entregado</option>
+              <option value="devuelto">Devuelto</option>
+            </select>
+          </div>
+
         </div>
-      }
+      </div>
     </div>
   `,
   styles: [`
     .repartidor-container {
-      max-width: 1000px;
+      max-width: 100%;
       margin: 0 auto;
+      padding: 0 20px;
+      padding-bottom: 80px;
     }
+
+    .page-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
     .page-header h1 {
       margin: 0 0 10px 0;
-      color: #2d3748;
+      color: var(--text-main);
       font-size: 2rem;
+      font-weight: 800;
     }
+
     .page-header p {
-      margin: 0 0 30px 0;
-      color: #718096;
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
     }
+
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      background: white;
-      border-radius: 12px;
-      color: #718096;
+      padding: 80px 20px;
+      background: var(--surface-color);
+      border-radius: var(--radius-xl);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      border: 1px dashed var(--border-color);
     }
+
     .envios-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 25px;
+    }
+
+    .envio-card {
+      background: var(--surface-color);
+      border-radius: var(--radius-xl);
+      padding: 25px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
-      gap: 20px;
     }
-    .envio-card {
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-left: 5px solid #cbd5e0;
+
+    .envio-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
     }
-    .envio-card.estado-en_transito {
-      border-left-color: #3b82f6;
-    }
-    .envio-card.estado-entregado {
-      border-left-color: #10b981;
-    }
-    .envio-card.estado-devuelto {
-      border-left-color: #ef4444;
-    }
+
+    /* Bordes de color según estado */
+    .estado-pendiente { border-left: 5px solid var(--warning-color); }
+    .estado-en_transito { border-left: 5px solid var(--info-color); }
+    .estado-entregado { border-left: 5px solid var(--success-color); }
+    .estado-devuelto { border-left: 5px solid var(--danger-color); }
+
     .envio-header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 15px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
     }
+
     .envio-header h3 {
-      margin: 0 0 8px 0;
-      color: #2d3748;
-      font-size: 1.3rem;
+      margin: 0 0 5px 0;
+      color: var(--text-main);
+      font-size: 1.25rem;
+      font-weight: 700;
     }
+
     .direccion {
-      color: #718096;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
       margin: 0;
     }
+
     .costo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #667eea;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      background: #eef2ff;
+      padding: 6px 14px;
+      border-radius: 99px;
     }
+
     .envio-info {
-      margin: 15px 0;
-      padding: 15px 0;
-      border-top: 2px solid #f7fafc;
-      border-bottom: 2px solid #f7fafc;
+      margin-bottom: 25px;
+      flex-grow: 1;
     }
+
     .envio-info p {
       margin: 8px 0;
-      color: #4a5568;
+      color: var(--text-main);
+      font-size: 1rem;
     }
+
     .envio-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      gap: 20px;
     }
+
     .estado-actual {
-      font-weight: 600;
-      color: #4a5568;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
+
     .estado-select {
-      padding: 8px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
+      flex-grow: 1;
+      padding: 10px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
       font-size: 0.95rem;
-      font-weight: 600;
+      color: var(--text-main);
       cursor: pointer;
-      background: white;
+      transition: all 0.2s;
+      background: var(--bg-color);
     }
+
     .estado-select:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); /* Indigo glow */
+      background: white;
+    }
+
+    @media (max-width: 768px) {
+      .repartidor-container {
+        padding: 0 15px;
+        padding-bottom: 80px;
+      }
+
+      .envio-header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .costo {
+        align-self: flex-start;
+      }
+
+      .envio-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .estado-select {
+        width: 100%;
+      }
     }
   `]
 })
@@ -164,16 +227,21 @@ export class RepartidorComponent implements OnInit {
 
   constructor(
     private envioService: EnvioService,
-    private authService: AuthService,
-  ) {}
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      this.envioService.obtenerEnviosRepartidor(user.uid).subscribe(envios => {
-        this.envios = envios;
-      });
-    }
+    this.authService.currentUser$.subscribe(user => {
+      if (user?.uid) {
+        this.envioService.obtenerEnviosRepartidor(user.uid).subscribe({
+          next: envios => {
+            this.envios = envios;
+            console.log('Envíos cargados para repartidor:', this.envios);
+          },
+          error: err => console.error('Error cargando envíos:', err)
+        });
+      }
+    });
   }
 
   getEstadoLabel(estado: EstadoEnvio): string {
@@ -190,11 +258,12 @@ export class RepartidorComponent implements OnInit {
     const nuevoEstado = event.target.value as EstadoEnvio;
     try {
       await this.envioService.actualizarEstado(envioId, nuevoEstado);
-      alert('✅ Estado actualizado correctamente');
     } catch (error) {
-      alert('❌ Error al actualizar el estado');
       console.error(error);
     }
   }
 
+  trackByEnvioId(index: number, envio: Envio) {
+    return envio.id;
+  }
 }

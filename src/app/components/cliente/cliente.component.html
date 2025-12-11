@@ -1,81 +1,89 @@
 <div class="cliente-container">
-  <header class="page-header">
-    <h1>Mis Envíos</h1>
-    <p>Historial y seguimiento de tus paquetes</p>
-  </header>
 
-  <!-- Filtros -->
-  <div class="filters">
-    <button class="filter-btn"
-            [class.active]="filtroActual === 'todos'"
-            (click)="filtrar('todos')">
-      Todos ({{ envios.length }})
-    </button>
-
-    <button class="filter-btn"
-            [class.active]="filtroActual === 'pendiente'"
-            (click)="filtrar('pendiente')">
-      Pendientes
-    </button>
-
-    <button class="filter-btn"
-            [class.active]="filtroActual === 'en_transito'"
-            (click)="filtrar('en_transito')">
-      En Tránsito
-    </button>
-
-    <button class="filter-btn"
-            [class.active]="filtroActual === 'entregado'"
-            (click)="filtrar('entregado')">
-      Entregados
-    </button>
-  </div>
-
-  <!-- Lista de envíos -->
-  @if (enviosFiltrados.length === 0) {
+  <main class="content-area">
+    @if (loading) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando envíos...</p>
+    </div>
+    } @else {
+    @if (enviosFiltrados.length === 0) {
     <div class="empty-state">
       <p>No tienes envíos {{ filtroActual !== 'todos' ? 'con este estado' : 'registrados' }}</p>
     </div>
-  } @else {
+    } @else {
     <div class="envios-grid">
-      @for (envio of enviosFiltrados; track envio.id) {
-        <div class="envio-card">
-          
-          <div class="envio-header">
-            <span class="estado-badge" [ngClass]="'estado-' + envio.estado">
-              {{ getEstadoLabel(envio.estado) }}
-            </span>
-            <span class="fecha">{{ envio.fecha_envio | date:'dd/MM/yyyy' }}</span>
-          </div>
+      @for (envio of enviosFiltrados | filter:searchText; track envio.id) {
+      <div class="envio-card">
+        <!-- Content omitted for brevity, standard card structure -->
+        <div class="envio-header">
+          <span class="estado-badge" [ngClass]="'estado-' + envio.estado">
+            {{ getEstadoLabel(envio.estado) }}
+          </span>
+          <span class="fecha">{{ envio.fecha_envio | date:'dd/MM/yyyy' }}</span>
+        </div>
 
-          <div class="envio-body">
-            <p><strong>Destinatario:</strong> {{ envio.destinatario }}</p>
-            <p>{{ envio.direccion }}</p>
-            @if (envio.descripcion) {
-              <p>{{ envio.descripcion }}</p>
+        <div class="envio-body">
+          <p><strong>Destinatario:</strong> {{ envio.destinatario }}</p>
+          <p>{{ envio.direccion }}</p>
+          @if (envio.descripcion) {
+          <p>{{ envio.descripcion }}</p>
+          }
+        </div>
+
+        <div class="envio-footer">
+          <span class="costo">S/. {{ envio.costo | number:'1.2-2' }}</span>
+
+          <div class="envio-actions">
+            <button class="btn-ver" (click)="verDetalle(envio)">Ver detalle</button>
+
+            @if (envio.estado === 'pendiente') {
+            <button class="btn-asignar" (click)="asignarRepartidor(envio)">
+              Enviar con Repartidor
+            </button>
+            }
+
+            @if (envio.repartidorId && envio.estado !== 'pendiente') {
+            <span class="badge-info">Asignado</span>
             }
           </div>
-
-          <div class="envio-footer">
-            <span class="costo">S/. {{ envio.costo | number:'1.2-2' }}</span>
-
-            <div class="envio-actions">
-              <button class="btn-ver" (click)="verDetalle(envio)">Ver detalle</button>
-
-              @if (envio.estado === 'pendiente') {
-                <button class="btn-asignar" (click)="asignarRepartidor(envio)">
-                  Enviar con Repartidor
-                </button>
-              }
-
-              @if (envio.repartidorId && envio.estado !== 'pendiente') {
-                <span class="badge-info">Asignado</span>
-              }
-            </div>
-          </div>
-          
         </div>
+
+      </div>
       }
     </div>
-  }
+    }
+    }
+  </main>
+
+  <aside class="controls-sidebar">
+    <header class="page-header">
+      <h1>Mis Envíos</h1>
+      <p>Historial y seguimiento</p>
+    </header>
+
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchText" placeholder="Buscar por remitente, destino..." class="search-input">
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn" [class.active]="filtroActual === 'todos'" (click)="filtrar('todos')">
+        Todos ({{ envios.length }})
+      </button>
+
+      <button class="filter-btn" [class.active]="filtroActual === 'pendiente'" (click)="filtrar('pendiente')">
+        Pendientes
+      </button>
+
+      <button class="filter-btn" [class.active]="filtroActual === 'en_transito'" (click)="filtrar('en_transito')">
+        En Tránsito
+      </button>
+
+      <button class="filter-btn" [class.active]="filtroActual === 'entregado'" (click)="filtrar('entregado')">
+        Entregados
+      </button>
+    </div>
+  </aside>
+
 </div>

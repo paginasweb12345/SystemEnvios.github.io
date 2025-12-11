@@ -1,13 +1,6 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ClienteComponent } from './components/cliente/cliente.component';
-import { NuevoEnvioComponent } from './components/nuevo-envio/nuevo-envio.component';
-import { RepartidorComponent } from './components/repartidor/repartidor.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { authGuard, roleGuard } from './guards/auth.guard';
-import { PrediccionesComponent } from './predicciones/predicciones.component';
 
 
 
@@ -19,11 +12,11 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'register',
-    component: RegisterComponent
+    loadComponent: () => import('./components/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'dashboard',
@@ -37,39 +30,38 @@ export const routes: Routes = [
       },
       {
         path: 'cliente',
-        component: ClienteComponent,
+        loadComponent: () => import('./components/cliente/cliente.component').then(m => m.ClienteComponent),
         canActivate: [roleGuard(['cliente'])]
       },
       {
         path: 'nuevo-envio',
-        component: NuevoEnvioComponent,
+        loadComponent: () => import('./components/nuevo-envio/nuevo-envio.component').then(m => m.NuevoEnvioComponent),
         canActivate: [roleGuard(['cliente'])]
       },
       {
         path: 'repartidor',
-        component: RepartidorComponent,
+        loadComponent: () => import('./components/repartidor/repartidor.component').then(m => m.RepartidorComponent),
         canActivate: [roleGuard(['repartidor'])]
       },
       {
         path: 'admin',
-        component: AdminComponent,
+        loadComponent: () => import('./components/admin/admin.component').then(m => m.AdminComponent),
         canActivate: [roleGuard(['administrador'])]
       },
       {
         path: 'envios',
-        component: AdminComponent,
+        loadComponent: () => import('./components/admin/admin.component').then(m => m.AdminComponent),
         canActivate: [roleGuard(['administrador'])]
       },
       {
         path: 'predicciones',
-        component: PrediccionesComponent,
+        loadComponent: () => import('./predicciones/predicciones.component').then(m => m.PrediccionesComponent),
         canActivate: [roleGuard(['administrador'])]
       }
-
     ]
   },
   {
     path: '**',
-    redirectTo: 'login'
+    loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
 ];

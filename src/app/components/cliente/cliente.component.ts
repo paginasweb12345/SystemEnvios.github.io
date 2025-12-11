@@ -1,29 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { EnvioService } from '../../services/envio.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
 import { Envio, EstadoEnvio, Usuario } from '../../models/models';
+import { FilterPipe } from '../../pipes/filter.pipe';
 
 @Component({
   selector: 'app-cliente',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, FilterPipe],
   templateUrl: './cliente.component.html',
   styleUrls: ['./cliente.component.css']
 })
 export class ClienteComponent implements OnInit {
-  
+
   envios: Envio[] = [];
   enviosFiltrados: Envio[] = [];
   filtroActual: 'todos' | EstadoEnvio = 'todos';
   repartidores: Usuario[] = [];
 
+  searchText = '';
+  loading = true; // Loading state
+
   constructor(
     private envioService: EnvioService,
     private usuarioService: UsuarioService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const user = this.authService.getCurrentUser();
@@ -34,8 +39,12 @@ export class ClienteComponent implements OnInit {
       next: (envios) => {
         this.envios = envios;
         this.filtrar(this.filtroActual);
+        this.loading = false;
       },
-      error: (error) => console.error('Error al obtener envíos:', error)
+      error: (error) => {
+        console.error('Error al obtener envíos:', error);
+        this.loading = false;
+      }
     });
 
     // Obtener repartidores
