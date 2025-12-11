@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router'; // Import RouterLink
 import { EnvioService } from '../../services/envio.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +11,7 @@ import { FilterPipe } from '../../pipes/filter.pipe';
 @Component({
   selector: 'app-cliente',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe],
+  imports: [CommonModule, FormsModule, FilterPipe, RouterLink], // Add RouterLink
   templateUrl: './cliente.component.html',
   styleUrls: ['./cliente.component.css']
 })

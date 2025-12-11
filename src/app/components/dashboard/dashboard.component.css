@@ -78,6 +78,8 @@
 .sidebar-nav {
   padding: 20px 15px;
   flex-grow: 1;
+  overflow-y: auto;
+  /* Enable scrolling for long menus */
 }
 
 .sidebar-nav a {
