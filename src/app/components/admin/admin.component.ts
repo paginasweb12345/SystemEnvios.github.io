@@ -101,12 +101,12 @@ import { Estadisticas, Envio } from '../../models/models';
           <table class="envios-table">
             <thead>
               <tr>
-                <th>Destinatario</th>
+                <th (click)="ordenarPor('destinatario')" style="cursor: pointer;">Destinatario {{ getSortIcon('destinatario') }}</th>
                 <th>Dirección</th>
-                <th>Fecha</th>
-                <th>Estado</th>
+                <th (click)="ordenarPor('fecha_envio')" style="cursor: pointer;">Fecha {{ getSortIcon('fecha_envio') }}</th>
+                <th (click)="ordenarPor('estado')" style="cursor: pointer;">Estado {{ getSortIcon('estado') }}</th>
                 <th>Repartidor</th>
-                <th>Costo</th>
+                <th (click)="ordenarPor('costo')" style="cursor: pointer;">Costo {{ getSortIcon('costo') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -173,11 +173,13 @@ export class AdminComponent implements OnInit {
   mostrarVista: 'estadisticas' | 'envios' = 'estadisticas';
   estadisticas: Estadisticas & { enviosAsignados?: number; enviosSinAsignar?: number } | null = null;
   envios: Envio[] = [];
+  sortField: string = 'fecha_envio';
+  sortDirection: 'asc' | 'desc' = 'desc';
 
   constructor(
     private estadisticasService: EstadisticasService,
     private envioService: EnvioService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.estadisticasService.obtenerEstadisticas().subscribe(stats => {
@@ -191,6 +193,7 @@ export class AdminComponent implements OnInit {
         ...e,
         fecha_envio: (e.fecha_envio as any)?.toDate?.() || new Date(e.fecha_envio)
       }));
+      this.triageEnvios();
     });
   }
 
@@ -202,7 +205,7 @@ export class AdminComponent implements OnInit {
 
   formatFecha(fecha: string | Date): string {
     const date = typeof fecha === 'string' ? new Date(fecha) : fecha;
-    const dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     return dias[date.getDay()];
   }
 
@@ -214,6 +217,37 @@ export class AdminComponent implements OnInit {
       devuelto: 'Devuelto'
     };
     return labels[estado] || estado;
+  }
+
+  ordenarPor(field: string) {
+    if (this.sortField === field) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortField = field;
+      this.sortDirection = 'asc';
+    }
+    this.triageEnvios();
+  }
+
+  getSortIcon(field: string): string {
+    if (this.sortField !== field) return '↕️';
+    return this.sortDirection === 'asc' ? '↑' : '↓';
+  }
+
+  triageEnvios() {
+    this.envios.sort((a: any, b: any) => {
+      let valA = a[this.sortField];
+      let valB = b[this.sortField];
+
+      if (this.sortField === 'fecha_envio') {
+        valA = new Date(valA).getTime();
+        valB = new Date(valB).getTime();
+      }
+
+      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
 
   trackByFecha(index: number, item: any) { return item.fecha; }

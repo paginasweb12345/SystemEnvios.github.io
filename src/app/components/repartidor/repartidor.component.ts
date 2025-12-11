@@ -91,14 +91,14 @@ import { Envio, EstadoEnvio } from '../../models/models';
 
     .envios-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
 
     .envio-card {
       background: var(--surface-color);
       border-radius: var(--radius-xl);
-      padding: 25px;
+      padding: 20px;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -132,6 +132,7 @@ import { Envio, EstadoEnvio } from '../../models/models';
       color: var(--text-main);
       font-size: 1.25rem;
       font-weight: 700;
+      word-break: break-word; /* Prevent overflow on long names */
     }
 
     .direccion {
@@ -147,6 +148,7 @@ import { Envio, EstadoEnvio } from '../../models/models';
       background: #eef2ff;
       padding: 6px 14px;
       border-radius: 99px;
+      white-space: nowrap; /* Keep cost on one line */
     }
 
     .envio-info {
@@ -198,26 +200,55 @@ import { Envio, EstadoEnvio } from '../../models/models';
 
     @media (max-width: 768px) {
       .repartidor-container {
-        padding: 0 15px;
+        padding: 0 12px; /* Reduced container padding */
         padding-bottom: 80px;
+        overflow-x: hidden;
+      }
+      
+      .page-header h1 {
+        font-size: 1.5rem; /* Smaller title */
+      }
+
+      .envios-list {
+        grid-template-columns: 1fr;
+        gap: 15px; /* Reduced gap */
+      }
+      
+      .envio-card {
+         width: 100%;
+         padding: 15px; /* Reduced card padding */
       }
 
       .envio-header {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+      }
+      
+      .envio-header h3 {
+        font-size: 1.1rem; /* Smaller card title */
       }
 
       .costo {
         align-self: flex-start;
+        font-size: 1.1rem; /* Smaller price */
+        padding: 4px 10px;
+      }
+
+      .envio-info p {
+        font-size: 0.9rem; /* Smaller info text */
       }
 
       .envio-actions {
         flex-direction: column;
         align-items: stretch;
+        gap: 15px;
       }
 
       .estado-select {
         width: 100%;
+        padding: 8px 12px; /* Touch friendly padding */
       }
     }
   `]
