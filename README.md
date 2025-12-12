@@ -36,6 +36,27 @@ Repartidor: Registrarse y autenticarse, ver entregas asignadas, marcar envío co
 
 Administrador: Visualizar estadísticas del sistema, ver todos los envíos del sistema.
 
+
+
+MI URL DE HOSTING FUNCIONAL
+Hosting URL: https://systemenviosalex123.web.app
+
+
+
+MI URL DE MI GIT HUB
+https://github.com/paginasweb12345/SystemEnvios.github.io.git
+
+
+
+MI URL DE MI VIDEO DE EXPLICACION 
+
+
+https://drive.google.com/file/d/1rTjulkCmMHzPAtb0StlthtLH1vgamoDf/view?usp=sharing
+
+
+
+
+
 RESUMEN COMPLETO DE MI PROYECTO
 src/
 ├── app/
