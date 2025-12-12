@@ -1,165 +1,76 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EnvioService } from '../services/envio.service';
-import { Envio, Estadisticas } from '../models/models';
 
 @Component({
-  selector: 'app-predicciones',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './predicciones.component.html',
-  styleUrls: ['./predicciones.component.css']
+    selector: 'app-predicciones',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './predicciones.component.html',
+    styleUrls: ['./predicciones.component.css']
 })
 export class PrediccionesComponent implements OnInit {
+    cargando: boolean = true;
 
-  envios: Envio[] = [];
-  stats!: Estadisticas;
-  cargando = true;
-
-  promedioPorDia = 0;
-  diaPico: { fecha: string, cantidad: number } | null = null;
-  prediccionManana = 0;
-  tiempoPromedioEntrega = 0;
-  porcentajeDevoluciones = 0;
-  destinosFrecuentes: { destino: string, cantidad: number }[] = [];
-  costosClasificados: { rango: string, cantidad: number }[] = [];
-
-  constructor(private envioService: EnvioService) {}
-
-  ngOnInit(): void {
-    this.envioService.obtenerTodosEnvios().subscribe(envios => {
-      this.envios = envios;
-      this.calcularEstadisticas();
-      this.calculosAvanzados();
-      this.cargando = false;
-    });
-  }
-
-  //  CONVERSIÓN SEGURA DE FECHA
-  private convertirFecha(fecha: any): Date | null {
-    if (!fecha) return null;
-
-    // Firestore Timestamp
-    if (fecha.toDate) {
-      return fecha.toDate();
-    }
-
-    // String
-    if (typeof fecha === "string") {
-      const d = new Date(fecha);
-      return isNaN(d.getTime()) ? null : d;
-    }
-
-    // Date
-    if (fecha instanceof Date) {
-      return fecha;
-    }
-
-    return null;
-  }
-
-
-  calcularEstadisticas() {
-    const total = this.envios.length;
-
-    const entregados = this.envios.filter(e => e.estado === 'entregado').length;
-    const enTransito = this.envios.filter(e => e.estado === 'en_transito').length;
-    const pendientes = this.envios.filter(e => e.estado === 'pendiente').length;
-    const devueltos = this.envios.filter(e => e.estado === 'devuelto').length;
-
-    const cumplimiento = total > 0 ? (entregados / total) * 100 : 0;
-
-    // Agrupar por día
-    const enviosPorDia: { fecha: string; cantidad: number }[] = [];
-    const mapa = new Map<string, number>();
-
-    this.envios.forEach(envio => {
-      const fechaObj = this.convertirFecha(envio.fecha_envio);
-      if (!fechaObj) return;
-
-      const fecha = fechaObj.toISOString().split('T')[0];
-      mapa.set(fecha, (mapa.get(fecha) || 0) + 1);
-    });
-
-    mapa.forEach((cantidad, fecha) => {
-      enviosPorDia.push({ fecha, cantidad });
-    });
-
-    this.stats = {
-      totalEnvios: total,
-      entregados,
-      enTransito,
-      pendientes,
-      devueltos,
-      porcentajeCumplimiento: Math.round(cumplimiento),
-      enviosPorDia
+    stats = {
+        totalEnvios: 0,
+        porcentajeCumplimiento: 0,
+        entregados: 0,
+        enTransito: 0,
+        pendientes: 0,
+        devueltos: 0
     };
-  }
 
+    promedioPorDia: number = 0;
+    prediccionManana: number = 0;
+    diaPico: { fecha: string; cantidad: number } | null = null;
+    tiempoPromedioEntrega: number = 0;
+    porcentajeDevoluciones: number = 0;
 
-  //  CÁLCULOS AVANZADOS
-  calculosAvanzados() {
-    if (!this.stats || this.stats.enviosPorDia.length === 0) return;
+    destinosFrecuentes: Array<{ destino: string; cantidad: number }> = [];
+    costosClasificados: Array<{ rango: string; cantidad: number }> = [];
 
-    //  Promedio por día
-    const totalDias = this.stats.enviosPorDia.length;
-    const totalEnvios = this.stats.totalEnvios;
-    this.promedioPorDia = +(totalEnvios / totalDias).toFixed(2);
+    constructor() { }
 
-    //  Día pico
-    this.diaPico = this.stats.enviosPorDia.reduce((max, dia) =>
-      dia.cantidad > max.cantidad ? dia : max
-    );
+    ngOnInit() {
+        this.cargarDatos();
+    }
 
-    //  Predicción mañana
-    const tendencia = this.diaPico.cantidad > this.promedioPorDia ? 1.2 : 1.0;
-    this.prediccionManana = Math.round(this.promedioPorDia * tendencia);
+    cargarDatos() {
+        // Simulación de carga de datos
+        setTimeout(() => {
+            this.stats = {
+                totalEnvios: 150,
+                porcentajeCumplimiento: 95,
+                entregados: 120,
+                enTransito: 20,
+                pendientes: 8,
+                devueltos: 2
+            };
 
-    //  Tiempo promedio de entrega (simulado)
-    const tiempos: number[] = [];
+            this.promedioPorDia = 12;
+            this.prediccionManana = 15;
 
-    this.envios.forEach(e => {
-      if (e.estado === 'entregado') {
-        const fechaObj = this.convertirFecha(e.fecha_envio);
-        if (!fechaObj) return;
+            this.diaPico = {
+                fecha: '2023-11-24',
+                cantidad: 25
+            };
 
-        const fEnv = fechaObj.getTime();
-        const fEnt = fEnv + (1000 * 60 * 60 * 24 * 2); // Simulación
+            this.tiempoPromedioEntrega = 2.5;
+            this.porcentajeDevoluciones = 1.3;
 
-        const dias = (fEnt - fEnv) / (1000 * 60 * 60 * 24);
-        tiempos.push(dias);
-      }
-    });
+            this.destinosFrecuentes = [
+                { destino: 'Madrid', cantidad: 45 },
+                { destino: 'Barcelona', cantidad: 30 },
+                { destino: 'Valencia', cantidad: 15 }
+            ];
 
-    this.tiempoPromedioEntrega =
-      tiempos.length > 0 ? +(tiempos.reduce((a, b) => a + b, 0) / tiempos.length).toFixed(1) : 0;
+            this.costosClasificados = [
+                { rango: 'Bajo (< 1kg)', cantidad: 50 },
+                { rango: 'Medio (1-5kg)', cantidad: 70 },
+                { rango: 'Alto (> 5kg)', cantidad: 30 }
+            ];
 
-    //  Porcentaje de devoluciones
-    this.porcentajeDevoluciones = this.stats.totalEnvios > 0
-      ? +(this.stats.devueltos * 100 / this.stats.totalEnvios).toFixed(2)
-      : 0;
-
-    // Destinos frecuentes
-    const mapaDestinos = new Map<string, number>();
-
-    this.envios.forEach(e => {
-      mapaDestinos.set(e.direccion, (mapaDestinos.get(e.direccion) || 0) + 1);
-    });
-
-    this.destinosFrecuentes = Array.from(mapaDestinos.entries())
-      .map(([destino, cantidad]) => ({ destino, cantidad }))
-      .sort((a, b) => b.cantidad - a.cantidad)
-      .slice(0, 5);
-
-    //  Clasificación por costo
-    const bajo = this.envios.filter(e => e.costo <= 20).length;
-    const medio = this.envios.filter(e => e.costo > 20 && e.costo <= 50).length;
-    const alto = this.envios.filter(e => e.costo > 50).length;
-
-    this.costosClasificados = [
-      { rango: "0 - 20", cantidad: bajo },
-      { rango: "21 - 50", cantidad: medio },
-      { rango: "50+", cantidad: alto }
-    ];
-  }
+            this.cargando = false;
+        }, 1500);
+    }
 }

@@ -12,12 +12,8 @@
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-group">
         <label> Correo Electrónico</label>
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="tu@email.com"
-          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-        />
+        <input type="email" formControlName="email" placeholder="tu@email.com"
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
         <span class="error-text" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
           Correo inválido
         </span>
@@ -25,29 +21,21 @@
 
       <div class="form-group">
         <label> Contraseña</label>
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="••••••••"
-          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        />
+        <input type="password" formControlName="password" placeholder="••••••••"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
         <span class="error-text" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
           Mínimo 6 caracteres
         </span>
       </div>
 
-      <button 
-        type="submit" 
-        class="btn-primary"
-        [disabled]="loginForm.invalid || loading"
-      >
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || loading">
         <span *ngIf="loading">Cargando...</span>
         <span *ngIf="!loading"> Iniciar Sesión</span>
       </button>
     </form>
 
     <div class="register-link">
-      ¿No tienes cuenta? 
+      ¿No tienes cuenta?
       <a routerLink="/register">Regístrate aquí</a>
     </div>
 

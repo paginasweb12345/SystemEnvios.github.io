@@ -1,52 +1,47 @@
-//  Modelo de Envío
-export interface Envio {
-  id?: string;
-  remitente: string;
-  destinatario: string;
-  direccion: string;
-  fecha_envio: Date | string;
-  estado: EstadoEnvio;
-  costo: number;
-  userId: string;
-  repartidorId?: string;
-  telefono?: string;
-  descripcion?: string;
+
+export interface Usuario {
+    uid: string;
+    email: string;
+    nombre: string;
+    rol: 'cliente' | 'repartidor' | 'administrador';
+    telefono?: string;
+    createdAt?: string | Date | any;
 }
 
-// Estados posibles del envío
 export type EstadoEnvio = 'pendiente' | 'en_transito' | 'entregado' | 'devuelto';
 
-// 👤 Modelo de Usuario
-export interface Usuario {
-  uid: string;
-  email: string;
-  nombre: string;
-  rol: RolUsuario;
-  telefono?: string;
-  createdAt?: Date | string;
+export interface Envio {
+    id?: string;
+    userId?: string;
+    repartidorId?: string;
+    remitente: string;
+    destinatario: string;
+    direccion: string;
+    telefono: string;
+    fecha_envio: string | Date | any;
+    costo: number;
+    descripcion?: string;
+    estado: EstadoEnvio;
 }
 
-// Roles de usuario
-export type RolUsuario = 'cliente' | 'repartidor' | 'administrador';
-
-// Estadísticas para el panel administrativo
 export interface Estadisticas {
-  totalEnvios: number;
-  entregados: number;
-  enTransito: number;
-  pendientes: number;
-  devueltos: number;
-  porcentajeCumplimiento: number;
-  enviosPorDia: { fecha: string; cantidad: number }[];
+    totalEnvios: number;
+    entregados: number;
+    enTransito: number;
+    pendientes: number;
+    devueltos: number;
+    porcentajeCumplimiento: number;
+    enviosPorDia: { fecha: string; cantidad: number }[];
 }
 
-//  Datos de autenticación
+export interface RegisterData {
+    email: string;
+    password: string;
+    nombre: string;
+    telefono: string;
+}
+
 export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData extends LoginData {
-  nombre: string;
-  telefono?: string;
+    email: string;
+    password: string;
 }
